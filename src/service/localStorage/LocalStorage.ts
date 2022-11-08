@@ -79,27 +79,21 @@ export const getItemWithCache = <RGet, EGet, A>(
   get: RTE.ReaderTaskEither<RGet, EGet, A>
 ): RTE.ReaderTaskEither<LocalStorageEnv & RGet, EGet | DecodeError, A> =>
   pipe(
-    // Try to get from the localStorage cache
     getItemWithDecode(key, decodeWithCodec(codec)),
     RTE.chainW((dataOpt) =>
       pipe(
         dataOpt,
         O.fold(
-          // Cache miss - do the API call, and store the results in the cache
           () =>
             pipe(
-              // Do get call
               get,
               RTE.chainW((data) =>
                 pipe(
-                  // Store the results as a side-effect
                   setItemWithEncode(key, data, codec.encode),
-                  // Return the results
                   RTE.map((_) => data)
                 )
               )
             ),
-          // Cache hit - just return it
           RTE.right
         )
       )

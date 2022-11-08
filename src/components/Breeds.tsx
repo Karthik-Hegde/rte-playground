@@ -1,20 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Breed } from "../model/Breed";
 import { HttpJsonError } from "../service/http/HttpError";
 import { pipe, RD } from "../utils/fpts";
-
-const getErrorMessage = (e: HttpJsonError): string => {
-  switch (e.tag) {
-    case "httpRequestError":
-      return "Failed to connect to server";
-    case "httpContentTypeError":
-      return "Unexpected response from server";
-    case "httpResponseStatusError":
-      return `Request failed with status: ${e.status}`;
-    case "decodeError":
-      return `Failed to decode response JSON`;
-  }
-};
+import { getErrorMessage } from "../utils/helpers";
 
 const Breeds = ({
   breedsRD,
@@ -22,7 +11,7 @@ const Breeds = ({
   breedsRD: RD.RemoteData<HttpJsonError, Array<Breed>>;
 }) => {
   return (
-    <>
+    <main style={{ padding: "20px" }}>
       <h1>Breeds</h1>
       {pipe(
         breedsRD,
@@ -34,7 +23,7 @@ const Breeds = ({
             <ul>
               {breeds.map((breed) => (
                 <li key={breed.name}>
-                  {breed.name}
+                  <Link to={breed.name}>{breed.name}</Link>
                   <ul>
                     {breed.subBreeds.map((subBreed) => (
                       <li key={subBreed}>{subBreed}</li>
@@ -46,7 +35,7 @@ const Breeds = ({
           )
         )
       )}
-    </>
+    </main>
   );
 };
 

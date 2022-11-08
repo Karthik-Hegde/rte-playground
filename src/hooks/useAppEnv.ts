@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { AppEnv, appEnv } from "../AppEnv";
-import { E, Eq, pipe, RD, RT, RTE } from "../utils/fpts";
+import { Eq, pipe, RD, RT, RTE } from "../utils/fpts";
 import { useIO } from "./useIO";
 
 export const AppEnvContext = React.createContext(appEnv);

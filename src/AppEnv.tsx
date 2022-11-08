@@ -3,8 +3,11 @@ import { fetchHttpClient } from "./service/http/FetchHttpClient";
 import { HttpClient, HttpClientEnv } from "./service/http/HttpClient";
 import { HttpJsonError } from "./service/http/HttpError";
 import {
+  BreedImageService,
+  BreedImageServiceEnv,
   BreedService,
   BreedServiceEnv,
+  makeBreedImageService,
   makeBreedService,
 } from "./service/domain/DogService";
 import {
@@ -45,14 +48,26 @@ export const breedServiceEnv: BreedServiceEnv<HttpJsonError> = {
   breedService,
 };
 
+export const breedImageService: BreedImageService<HttpJsonError> =
+  makeBreedImageService({
+    ...httpClientEnv,
+    ...cacheServiceEnv,
+  });
+
+export const breedImageServiceEnv: BreedImageServiceEnv<HttpJsonError> = {
+  breedImageService,
+};
+
 export type AppEnv = HttpClientEnv &
   LocalStorageEnv &
   CacheServiceEnv &
-  BreedServiceEnv<HttpJsonError>;
+  BreedServiceEnv<HttpJsonError> &
+  BreedImageServiceEnv<HttpJsonError>;
 
 export const appEnv: AppEnv = {
   ...httpClientEnv,
   ...localStorageEnv,
   ...cacheServiceEnv,
   ...breedServiceEnv,
+  ...breedImageServiceEnv,
 };

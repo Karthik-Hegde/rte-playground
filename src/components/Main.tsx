@@ -1,5 +1,5 @@
-import React, { useReducer, useState } from "react";
-import { appEnv, breedServiceEnv } from "../AppEnv";
+import React, { useReducer, useState, useEffect } from "react";
+import { appEnv, breedImageServiceEnv, breedServiceEnv } from "../AppEnv";
 import {
   AppEnvContext,
   useAppEnvReducer,
@@ -8,6 +8,7 @@ import {
   useAppEnvRTE,
 } from "../hooks/useAppEnv";
 import { BreedServiceContext, useBreedsRD } from "../hooks/useDomain";
+import { BreedImageServiceContext } from "../hooks/useImageService";
 import { Breed } from "../model/Breed";
 import {
   BreedService,
@@ -16,6 +17,7 @@ import {
 } from "../service/domain/DogService";
 import { HttpJsonError } from "../service/http/HttpError";
 import { Eq, pipe, RD, RT, RTE, TE } from "../utils/fpts";
+import BreedImage from "./BreedAlbum";
 import Breeds from "./Breeds";
 
 const mockBreedService: BreedService<never> = {
@@ -150,7 +152,6 @@ const Main = () => {
   //     <MainAppEnvRTE />
   //   </AppEnvContext.Provider>
   // );
-
   /**
    * AppEnv context with RemoteData-based hook
    */
@@ -159,23 +160,23 @@ const Main = () => {
   //     <MainAppEnvRemoteData />
   //   </AppEnvContext.Provider>
   // );
-
   /**
    * AppEnv context with reducer-based hook
    */
-  return (
-    <AppEnvContext.Provider value={appEnv}>
-      <MainAppEnvReducer />
-    </AppEnvContext.Provider>
-  );
+  // return (
+  //   <AppEnvContext.Provider value={appEnv}>
+  //     <MainAppEnvReducer />
+  //   </AppEnvContext.Provider>
+  // );
   /**
    * BreedService context with real API
    */
-  // return (
-  //   <BreedServiceContext.Provider value={breedServiceEnv}>
-  //     <MainBreedService />
-  //   </BreedServiceContext.Provider>
-  // );
+  return (
+    <BreedServiceContext.Provider value={breedServiceEnv}>
+      <MainBreedService />
+    </BreedServiceContext.Provider>
+  );
+
   /**
    * BreedService context with mock data
    */
